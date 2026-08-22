@@ -35,7 +35,7 @@ php artisan vendor:publish --tag=fopost-config
 Add your key to `.env`:
 
 ```dotenv
-FOPOST_API_KEY=fop_live_your_key_here
+FOPOST_API_KEY=fp_your_key_here
 ```
 
 Everything else is optional:
@@ -165,7 +165,7 @@ use Fopost\Sdk\Client;
 use Fopost\Sdk\Http\Response;
 use Fopost\Sdk\Http\Transport;
 
-$this->app->instance(Client::class, new Client('fop_live_test', 'https://api.fopost.com', 30.0, 3, $fakeTransport));
+$this->app->instance(Client::class, new Client('fp_test', 'https://api.fopost.com', 30.0, 3, $fakeTransport));
 ```
 
 ## Looking for the free self-hosted toolkit?

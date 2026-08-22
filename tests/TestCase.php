@@ -32,6 +32,6 @@ abstract class TestCase extends Orchestra
      */
     protected function defineEnvironment($app): void
     {
-        $app['config']->set('fopost.api_key', 'fop_live_test');
+        $app['config']->set('fopost.api_key', 'fp_test');
     }
 }

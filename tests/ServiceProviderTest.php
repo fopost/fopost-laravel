@@ -36,14 +36,14 @@ final class ServiceProviderTest extends TestCase
 
     public function test_the_client_is_built_from_config(): void
     {
-        config()->set('fopost.api_key', 'fop_live_from_config');
+        config()->set('fopost.api_key', 'fp_from_config');
         config()->set('fopost.base_url', 'https://api.example.test');
         $this->app->forgetInstance(Client::class);
 
         $client = $this->app->make(Client::class);
 
         $this->assertSame('https://api.example.test/api/v1', $client->baseUrl());
-        $this->assertSame('fop_live_from_config', $this->headersOf($client)['X-API-Key']);
+        $this->assertSame('fp_from_config', $this->headersOf($client)['X-API-Key']);
     }
 
     public function test_a_base_url_that_already_carries_the_api_path_is_left_alone(): void

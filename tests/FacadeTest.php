@@ -31,14 +31,14 @@ final class FacadeTest extends TestCase
     public function test_it_proxies_a_call_through_to_the_client(): void
     {
         $transport = new RecordingTransport('{"data":[{"id":"ws_1","name":"Studio"}]}');
-        $this->app->instance(Client::class, new Client('fop_live_stub', 'https://api.example.test', 30.0, 3, $transport));
+        $this->app->instance(Client::class, new Client('fp_stub', 'https://api.example.test', 30.0, 3, $transport));
 
         $workspaces = Fopost::workspaces()->list();
 
         $this->assertCount(1, $transport->calls);
         $this->assertSame('GET', $transport->calls[0]['method']);
         $this->assertSame('https://api.example.test/api/v1/workspaces', $transport->calls[0]['url']);
-        $this->assertSame('fop_live_stub', $transport->calls[0]['headers']['X-API-Key']);
+        $this->assertSame('fp_stub', $transport->calls[0]['headers']['X-API-Key']);
         $this->assertSame('ws_1', $workspaces[0]->id);
     }
 }
