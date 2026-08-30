@@ -13,9 +13,13 @@ connection, token refresh, and delivery happens on the hosted API, so there is n
 
 ## Requirements
 
-- PHP 8.1 or newer
-- Laravel 10, 11, or 12
+- PHP 8.2 or newer
+- Laravel 12
 - A FoPost API key from [app.fopost.com/api-keys](https://app.fopost.com/api-keys)
+
+Laravel 10 and 11 are not supported. Those framework lines are out of active support and carry
+unpatched security advisories that Composer blocks by default, so there is no version of them
+this package can be tested against.
 
 ## Installation
 
