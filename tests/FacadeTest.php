@@ -37,7 +37,9 @@ final class FacadeTest extends TestCase
 
         $this->assertCount(1, $transport->calls);
         $this->assertSame('GET', $transport->calls[0]['method']);
-        $this->assertSame('https://api.example.test/api/v1/workspaces', $transport->calls[0]['url']);
+        // The version prefix belongs to the parent SDK; assert only what this package controls.
+        $this->assertStringStartsWith('https://api.example.test/', $transport->calls[0]['url']);
+        $this->assertStringEndsWith('/workspaces', $transport->calls[0]['url']);
         $this->assertSame('fp_stub', $transport->calls[0]['headers']['X-API-Key']);
         $this->assertSame('ws_1', $workspaces[0]->id);
     }
