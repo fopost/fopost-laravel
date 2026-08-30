@@ -42,16 +42,17 @@ final class ServiceProviderTest extends TestCase
 
         $client = $this->app->make(Client::class);
 
-        $this->assertSame('https://api.example.test/api/v1', $client->baseUrl());
+        $this->assertSame('https://api.example.test' . HttpClient::API_PATH_SUFFIX, $client->baseUrl());
         $this->assertSame('fp_from_config', $this->headersOf($client)['X-API-Key']);
     }
 
     public function test_a_base_url_that_already_carries_the_api_path_is_left_alone(): void
     {
-        config()->set('fopost.base_url', 'https://api.example.test/api/v1');
+        $configured = 'https://api.example.test' . HttpClient::API_PATH_SUFFIX;
+        config()->set('fopost.base_url', $configured);
         $this->app->forgetInstance(Client::class);
 
-        $this->assertSame('https://api.example.test/api/v1', $this->app->make(Client::class)->baseUrl());
+        $this->assertSame($configured, $this->app->make(Client::class)->baseUrl());
     }
 
     /**
