@@ -62,10 +62,13 @@ A call flows straight through: `Fopost::posts()->create(...)` resolves the conta
 hands off to the parent SDK, which owns the transport. Nothing in this repo touches HTTP.
 
 Transport facts that matter here only because the config sets them: auth is `X-API-Key`, the base
-URL defaults to `https://api.fopost.com` and the parent appends `/api/v1` when the configured URL
-carries no path, timeout defaults to 30s, and retries default to 3 attempts. A user setting
-`FOPOST_API_URL` to a value that already ends in `/api/v1` is left alone — `ServiceProviderTest`
-pins both cases.
+URL defaults to `https://api.fopost.com` and the parent appends its version path
+(`HttpClient::API_PATH_SUFFIX`, currently `/v1`) when the configured URL carries no path, timeout
+defaults to 30s, and retries default to 3 attempts. A user setting `FOPOST_API_URL` to a value that
+already carries that path is left alone — `ServiceProviderTest` pins both cases.
+
+The API serves `/v1`; `/api/v1` is **not** served and returns 404. The tests assert the parent's
+constant rather than a literal, so a change to the parent's prefix cannot silently break them.
 
 ## Commands
 
