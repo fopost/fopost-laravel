@@ -5,7 +5,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/fopost/fopost-laravel/ci.yml?branch=main&label=ci)](https://github.com/fopost/fopost-laravel/actions)
 [![License](https://img.shields.io/packagist/l/fopost/laravel.svg)](https://github.com/fopost/fopost-laravel/blob/main/LICENSE)
 
-Official Laravel SDK for the FoPost API. Schedule and publish to +30 social platforms from your code.
+Official Laravel SDK for the [FoPost](https://fopost.com) API. Schedule and publish to +30 social platforms from your code.
 
 This package is a thin wrapper around [`fopost/sdk`](https://github.com/fopost/fopost-php): it binds the
 API client into the container, adds a facade, and gives you a publishable config file. Every platform
