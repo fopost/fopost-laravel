@@ -8,7 +8,7 @@ return [
     | API key
     |--------------------------------------------------------------------------
     |
-    | Create one at https://app.fopost.com/api-keys and put it in your .env
+    | Create one at https://fopost.com/dashboard/api-keys and put it in your .env
     | as FOPOST_API_KEY. Never commit it.
     |
     */
