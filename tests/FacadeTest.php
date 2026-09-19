@@ -7,7 +7,9 @@ namespace Fopost\Laravel\Tests;
 use Fopost\Laravel\Facades\Fopost;
 use Fopost\Sdk\Client;
 use Fopost\Sdk\Resource\AccountsResource;
+use Fopost\Sdk\Resource\AdsResource;
 use Fopost\Sdk\Resource\AiResource;
+use Fopost\Sdk\Resource\InboxResource;
 use Fopost\Sdk\Resource\LabelsResource;
 use Fopost\Sdk\Resource\PostsResource;
 use Fopost\Sdk\Resource\WorkspacesResource;
@@ -26,6 +28,8 @@ final class FacadeTest extends TestCase
         $this->assertInstanceOf(WorkspacesResource::class, Fopost::workspaces());
         $this->assertInstanceOf(LabelsResource::class, Fopost::labels());
         $this->assertInstanceOf(AiResource::class, Fopost::ai());
+        $this->assertInstanceOf(InboxResource::class, Fopost::inbox());
+        $this->assertInstanceOf(AdsResource::class, Fopost::ads());
     }
 
     public function test_it_proxies_a_call_through_to_the_client(): void

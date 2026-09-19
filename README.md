@@ -140,6 +140,29 @@ $rewritten = Fopost::ai()->rewrite(
 );
 ```
 
+### Inbox
+
+Needs the `inbox` scope.
+
+```php
+$unread = Fopost::inbox()->list(workspaceId: $workspaceId, state: 'unread');
+Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
+Fopost::inbox()->update($unread[0]->id, 'resolved');
+```
+
+### Ads
+
+Needs the `ads` scope; `boost()`, `create()`, `setStatus()`, `delete()`, `bulkSetStatus()` and every campaign, ad set and network ad write also need `publish`. Anything created starts paused unless `paused: false` is passed.
+
+```php
+$ads = Fopost::ads()->list($workspaceId);
+Fopost::ads()->setStatus($ads[0]->id, $workspaceId, 'active');
+
+$tree = Fopost::ads()->accountTree('act_123', $connectionId);   // campaigns, ad sets and ads
+$report = Fopost::ads()->insights($connectionId, $tree->campaigns[0]->id, '2026-09-01', '2026-09-07', daily: true);
+$leads = Fopost::ads()->leadsFeed($workspaceId, cursor: $cursor);
+```
+
 ### Media
 
 ```php

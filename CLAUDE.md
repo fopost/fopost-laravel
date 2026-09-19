@@ -27,17 +27,11 @@ When the parent's public surface changes, this repo needs a matching PR.
 
 ### Parent dependency (registry status)
 
-`fopost/sdk` is **not on Packagist yet**. `composer.json` declares the normal released
-constraint (`"fopost/sdk": "^0.1"`) because that is what ships, but nothing in this repo or in
-`.github/workflows/ci.yml` resolves the parent from source, so a clean `composer update` cannot
-find it today. Until the parent is published, resolve it with a VCS repository — preferably as a
-CI step, not a committed `repositories` block:
-
-```bash
-composer config repositories.parent vcs https://github.com/fopost/fopost-php
-```
-
-Delete that shim the day `fopost/sdk` lands on Packagist.
+`fopost/sdk` is on Packagist. `composer.json` declares the normal released constraint
+(`"fopost/sdk": "^0.3"`) and a clean `composer update` resolves it from there.
+`.github/workflows/ci.yml` still has the step "Point Composer at the parent SDK repository", which
+adds a VCS repository for `https://github.com/fopost/fopost-php`; it is a leftover and no longer
+needed now that the parent is published.
 
 ## Brand Rules
 
@@ -106,16 +100,14 @@ the provider and the alias and sets a dummy key.
 
 ## Releasing
 
-There is **no `.github/workflows/release.yml`** in this repo and **no repo secret to configure**.
-Composer packages are released by tag:
+There is **no repo secret to configure**. On a `v*` tag, `.github/workflows/release.yml` validates
+`composer.json`, runs PHPUnit, and creates the GitHub Release. Composer packages are released by tag:
 
 1. Bump nothing — this package carries no version constant; the tag is the version.
 2. `git tag v<version> && git push --tags`.
 3. Packagist picks the tag up through its GitHub hook.
 
-`fopost/laravel` is **not on Packagist yet** (nor is its parent `fopost/sdk`), so step 3 is
-inert until the package is submitted. The README badges point at a Packagist page that does not
-exist yet; that is expected, not a bug to "fix" by removing them.
+`fopost/laravel` is on Packagist, and so is its parent `fopost/sdk`.
 
 ## Git
 

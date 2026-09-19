@@ -21,7 +21,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "fopost/sdk": "^0.1",
+        "fopost/sdk": "^0.3",
         "illuminate/support": "^12.0"
     },
     "require-dev": {
