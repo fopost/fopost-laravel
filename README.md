@@ -163,6 +163,17 @@ $report = Fopost::ads()->insights($connectionId, $tree->campaigns[0]->id, '2026-
 $leads = Fopost::ads()->leadsFeed($workspaceId, cursor: $cursor);
 ```
 
+### Media
+
+```php
+$asset = Fopost::media()->uploadDirect(
+    workspaceId: $workspaceId,
+    filename: 'launch.png',
+    mimeType: 'image/png',
+    bytes: file_get_contents('launch.png'),
+);
+```
+
 ## Errors
 
 Every failure is a `Fopost\Sdk\Exception\FopostException` subclass, so one catch covers the lot:

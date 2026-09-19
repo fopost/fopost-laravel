@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\AiResource ai()
  * @method static \Fopost\Sdk\Resource\InboxResource inbox()
  * @method static \Fopost\Sdk\Resource\AdsResource ads()
+ * @method static \Fopost\Sdk\Resource\MediaResource media()
  * @method static string baseUrl()
  * @method static mixed request(string $method, string $path, mixed $json = null, ?array $params = null)
  *
