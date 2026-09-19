@@ -140,6 +140,25 @@ $rewritten = Fopost::ai()->rewrite(
 );
 ```
 
+### Inbox
+
+Needs the `inbox` scope.
+
+```php
+$unread = Fopost::inbox()->list(workspaceId: $workspaceId, state: 'unread');
+Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
+Fopost::inbox()->update($unread[0]->id, 'resolved');
+```
+
+### Ads
+
+Needs the `ads` scope; `boost()`, `create()`, `setStatus()` and `delete()` also need `publish`. A boost or ad starts paused unless `paused: false` is passed.
+
+```php
+$ads = Fopost::ads()->list($workspaceId);
+Fopost::ads()->setStatus($ads[0]->id, $workspaceId, 'active');
+```
+
 ## Errors
 
 Every failure is a `Fopost\Sdk\Exception\FopostException` subclass, so one catch covers the lot:
