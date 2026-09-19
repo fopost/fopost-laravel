@@ -28,7 +28,7 @@ When the parent's public surface changes, this repo needs a matching PR.
 ### Parent dependency (registry status)
 
 `fopost/sdk` is **not on Packagist yet**. `composer.json` declares the normal released
-constraint (`"fopost/sdk": "^0.1"`) because that is what ships, but nothing in this repo or in
+constraint (`"fopost/sdk": "^0.2"`) because that is what ships, but nothing in this repo or in
 `.github/workflows/ci.yml` resolves the parent from source, so a clean `composer update` cannot
 find it today. Until the parent is published, resolve it with a VCS repository — preferably as a
 CI step, not a committed `repositories` block:
