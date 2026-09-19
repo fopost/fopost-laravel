@@ -140,6 +140,17 @@ $rewritten = Fopost::ai()->rewrite(
 );
 ```
 
+### Media
+
+```php
+$asset = Fopost::media()->uploadDirect(
+    workspaceId: $workspaceId,
+    filename: 'launch.png',
+    mimeType: 'image/png',
+    bytes: file_get_contents('launch.png'),
+);
+```
+
 ## Errors
 
 Every failure is a `Fopost\Sdk\Exception\FopostException` subclass, so one catch covers the lot:
