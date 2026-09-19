@@ -28,7 +28,7 @@ When the parent's public surface changes, this repo needs a matching PR.
 ### Parent dependency (registry status)
 
 `fopost/sdk` is on Packagist. `composer.json` declares the normal released constraint
-(`"fopost/sdk": "^0.2"`) and a clean `composer update` resolves it from there.
+(`"fopost/sdk": "^0.3"`) and a clean `composer update` resolves it from there.
 `.github/workflows/ci.yml` still has the step "Point Composer at the parent SDK repository", which
 adds a VCS repository for `https://github.com/fopost/fopost-php`; it is a leftover and no longer
 needed now that the parent is published.
