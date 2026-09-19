@@ -100,8 +100,8 @@ the provider and the alias and sets a dummy key.
 
 ## Releasing
 
-There is **no `.github/workflows/release.yml`** in this repo and **no repo secret to configure**.
-Composer packages are released by tag:
+There is **no repo secret to configure**. On a `v*` tag, `.github/workflows/release.yml` validates
+`composer.json`, runs PHPUnit, and creates the GitHub Release. Composer packages are released by tag:
 
 1. Bump nothing — this package carries no version constant; the tag is the version.
 2. `git tag v<version> && git push --tags`.
