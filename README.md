@@ -122,6 +122,16 @@ Fopost::labels()->update($label->id, name: 'Launch');
 Fopost::labels()->delete($label->id);
 ```
 
+### Activity
+
+```php
+$page = Fopost::activity()->list($workspaceId);
+
+// The audit log: who joined, left, or changed role and access, plus changes to
+// two-step verification, passkeys, single sign-on, and signed-in devices.
+$audit = Fopost::activity()->list($workspaceId, 'security');
+```
+
 ### AI
 
 ```php
