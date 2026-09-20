@@ -150,6 +150,16 @@ Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
 Fopost::inbox()->update($unread[0]->id, 'resolved');
 ```
 
+### Contacts
+
+The people behind that inbox: one row per human, however many handles they write from. Needs the `inbox` scope, except `conversationAnalytics()`, which answers counts per thread and needs `analytics`.
+
+```php
+$contacts = Fopost::contacts()->list($workspaceId, search: 'ada');
+$threads = Fopost::contacts()->conversations($contacts->items[0]->id);
+Fopost::contacts()->import($workspaceId, file_get_contents('contacts.csv'));
+```
+
 ### Ads
 
 Needs the `ads` scope; `boost()`, `create()`, `setStatus()`, `delete()`, `bulkSetStatus()` and every campaign, ad set and network ad write also need `publish`. Anything created starts paused unless `paused: false` is passed.
