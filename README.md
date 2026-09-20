@@ -160,6 +160,42 @@ $threads = Fopost::contacts()->conversations($contacts->items[0]->id);
 Fopost::contacts()->import($workspaceId, file_get_contents('contacts.csv'));
 ```
 
+### Broadcasts and sequences
+
+A broadcast is one message into every conversation you already have with a segment of your contacts; a sequence is a series of them on a delay. Neither opens a cold DM.
+
+Nothing is sent into a closed messaging window: Messenger and Instagram take a business-initiated message only within 24 hours of the contact's last one, so recipients outside it come back skipped with `window_closed` rather than attempted. The number sent is therefore often lower than the audience, and that is correct rather than a failure.
+
+Reading needs the `inbox` scope; `send()`, `cancel()`, `enroll()` and `unenroll()` also need `publish`.
+
+```php
+use Fopost\Sdk\Model\SequenceStep;
+
+$broadcast = Fopost::broadcasts()->create(
+    $workspaceId,
+    $accountId,
+    'September check-in',
+    'New colours just landed. Want a look?',
+    audience: ['platforms' => ['instagram']],
+);
+
+// The recipients count is how many contacts matched, not how many will be messaged.
+Fopost::broadcasts()->send($broadcast->id);
+
+// Who was skipped, and why.
+foreach (Fopost::broadcasts()->recipients($broadcast->id, status: 'skipped') as $recipient) {
+    echo $recipient->displayName, ': ', $recipient->skipReason, PHP_EOL;
+}
+
+$sequence = Fopost::sequences()->create($workspaceId, $accountId, 'Welcome', [
+    SequenceStep::make(0, 'Thanks for the follow'),
+    SequenceStep::make(48, 'Here is what people usually ask us first.'),
+]);
+
+Fopost::sequences()->enroll($sequence->id, [$contactId]);
+Fopost::sequences()->unenroll($sequence->id, [$contactId]);
+```
+
 ### Ads
 
 Needs the `ads` scope; `boost()`, `create()`, `setStatus()`, `delete()`, `bulkSetStatus()` and every campaign, ad set and network ad write also need `publish`. Anything created starts paused unless `paused: false` is passed.
