@@ -150,6 +150,27 @@ Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
 Fopost::inbox()->update($unread[0]->id, 'resolved');
 ```
 
+### WhatsApp Business
+
+Needs the `accounts` scope. Available once the parent SDK release carrying
+`WhatsappResource` is installed; the platform owns the templates, flows, profile
+and commerce settings, so every call is live and all of it answers 503 until
+WhatsApp is set up.
+
+```php
+$profile = Fopost::whatsapp()->getProfile($accountId);
+
+// Filing a template returns the review status the platform gave it, not an
+// assumed one: it is PENDING until the platform approves it.
+$template = Fopost::whatsapp()->createTemplate(
+    $accountId,
+    'order_shipped',
+    'en_US',
+    'UTILITY',
+    [['type' => 'BODY', 'text' => 'Your order is on its way.']],
+);
+```
+
 ### Ads
 
 Needs the `ads` scope; `boost()`, `create()`, `setStatus()`, `delete()`, `bulkSetStatus()` and every campaign, ad set and network ad write also need `publish`. Anything created starts paused unless `paused: false` is passed.
