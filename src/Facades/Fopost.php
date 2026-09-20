@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\LabelsResource labels()
  * @method static \Fopost\Sdk\Resource\AiResource ai()
  * @method static \Fopost\Sdk\Resource\MediaResource media()
+ * @method static \Fopost\Sdk\Resource\BlogsResource blogs()
  * @method static string baseUrl()
  * @method static mixed request(string $method, string $path, mixed $json = null, ?array $params = null)
  *
