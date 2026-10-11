@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\ContactsResource contacts()
  * @method static \Fopost\Sdk\Resource\BroadcastsResource broadcasts()
  * @method static \Fopost\Sdk\Resource\SequencesResource sequences()
+ * @method static \Fopost\Sdk\Resource\BlogResource blog()
  * @method static \Fopost\Sdk\Resource\AdsResource ads()
  * @method static \Fopost\Sdk\Resource\MediaResource media()
  * @method static \Fopost\Sdk\Resource\ActivityResource activity()

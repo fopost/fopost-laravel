@@ -9,6 +9,7 @@ use Fopost\Sdk\Client;
 use Fopost\Sdk\Resource\AccountsResource;
 use Fopost\Sdk\Resource\AdsResource;
 use Fopost\Sdk\Resource\AiResource;
+use Fopost\Sdk\Resource\BlogResource;
 use Fopost\Sdk\Resource\InboxResource;
 use Fopost\Sdk\Resource\LabelsResource;
 use Fopost\Sdk\Resource\PostsResource;
@@ -30,6 +31,7 @@ final class FacadeTest extends TestCase
         $this->assertInstanceOf(AiResource::class, Fopost::ai());
         $this->assertInstanceOf(InboxResource::class, Fopost::inbox());
         $this->assertInstanceOf(AdsResource::class, Fopost::ads());
+        $this->assertInstanceOf(BlogResource::class, Fopost::blog());
     }
 
     public function test_it_proxies_a_call_through_to_the_client(): void
