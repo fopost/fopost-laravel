@@ -50,6 +50,7 @@ Everything else is optional:
 | `FOPOST_API_URL` | `https://api.fopost.com` | API base URL |
 | `FOPOST_API_TIMEOUT` | `30` | Seconds to wait for one request |
 | `FOPOST_API_MAX_RETRIES` | `3` | Attempts for a rate limited request |
+| `FOPOST_WEBSITE_SECRET` | none | Secret FoPost signs published articles with, see [Receive blog articles](#receive-blog-articles) |
 
 ## Quickstart
 
@@ -219,6 +220,20 @@ $report = Fopost::ads()->insights($connectionId, $tree->campaigns[0]->id, '2026-
 $leads = Fopost::ads()->leadsFeed($workspaceId, cursor: $cursor);
 ```
 
+### Blog
+
+An article goes to a website; a post goes to a social network. Reads and keyword edits need the `posts` scope, `requestArticle()`, `planKeywords()` and `regenerateArticle()` need `ai`, `publishArticle()` needs `publish`.
+
+```php
+$article = Fopost::blog()->requestArticle($workspaceId, keyword: 'scheduling posts from laravel');
+
+foreach (Fopost::blog()->listArticles($workspaceId, status: 'draft') as $draft) {
+    echo $draft->title, PHP_EOL;
+}
+
+Fopost::blog()->publishArticle($workspaceId, $article->id);
+```
+
 ### Media
 
 ```php
@@ -229,6 +244,37 @@ $asset = Fopost::media()->uploadDirect(
     bytes: file_get_contents('launch.png'),
 );
 ```
+
+## Receive blog articles
+
+Point the blog at your site with `Fopost::blog()->updateSettings($workspaceId, ['targetKind' => 'website', 'websiteUrl' => 'https://yourbrand.com/fopost/articles'])`. The result carries `websiteSecret` once; put it in `.env` as `FOPOST_WEBSITE_SECRET`. Every published article is then delivered to that URL as a signed `article.published` webhook.
+
+Mount the receiver in `routes/web.php` or `routes/api.php`:
+
+```php
+Route::fopostArticles('/fopost/articles');
+```
+
+It reads the raw body, verifies the signature through `fopost/sdk`, answers `401` when it does not match, `{ "ok": true }` for the `article.test` ping, and hands a published article to your callback. Register it in a service provider's `boot()`; return the live URL and the receiver echoes it back as `{ "url": "..." }`:
+
+```php
+use Fopost\Laravel\Facades\Fopost;
+use Fopost\Sdk\Model\BlogArticleWebhookPayload;
+
+Fopost::onArticlePublished(function (BlogArticleWebhookPayload $article): string {
+    $post = Article::updateOrCreate(['fopost_id' => $article->id], [
+        'title' => $article->title,
+        'slug' => $article->slug,
+        'body' => $article->bodyHtml,
+        'excerpt' => $article->excerpt,
+        'tags' => $article->tags,
+    ]);
+
+    return route('articles.show', $post);
+});
+```
+
+Prefer events? Every verified delivery also dispatches `Fopost\Laravel\Events\ArticlePublished` with the same `$article`; a listener that returns a string is echoed as the URL when no callback is registered. Image URLs on the payload are fetchable for six hours, so download and store your own copy.
 
 ## Errors
 
