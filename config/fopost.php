@@ -49,4 +49,17 @@ return [
     */
 
     'max_retries' => (int) env('FOPOST_API_MAX_RETRIES', 3),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Website secret
+    |--------------------------------------------------------------------------
+    |
+    | The secret FoPost showed once when you set the blog's website URL. The
+    | article receiver mounted with Route::fopostArticles() verifies every
+    | delivery against it.
+    |
+    */
+
+    'website_secret' => env('FOPOST_WEBSITE_SECRET'),
 ];

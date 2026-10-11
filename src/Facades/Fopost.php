@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Fopost\Laravel\Facades;
 
+use Fopost\Laravel\Blog\ArticleReceiver;
 use Fopost\Sdk\Client;
+use Fopost\Sdk\Model\BlogArticleWebhookPayload;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -38,5 +40,11 @@ final class Fopost extends Facade
     protected static function getFacadeAccessor(): string
     {
         return Client::class;
+    }
+
+    /** @param callable(BlogArticleWebhookPayload): (string|null|void) $callback may return the live URL */
+    public static function onArticlePublished(callable $callback): void
+    {
+        static::$app->make(ArticleReceiver::class)->onPublished($callback);
     }
 }
