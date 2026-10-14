@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Fopost\Laravel\Facades;
 
+use Fopost\Laravel\Blog\ArticleReceiver;
 use Fopost\Sdk\Client;
+use Fopost\Sdk\Model\BlogArticleWebhookPayload;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -23,6 +25,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\ContactsResource contacts()
  * @method static \Fopost\Sdk\Resource\BroadcastsResource broadcasts()
  * @method static \Fopost\Sdk\Resource\SequencesResource sequences()
+ * @method static \Fopost\Sdk\Resource\BlogResource blog()
  * @method static \Fopost\Sdk\Resource\AdsResource ads()
  * @method static \Fopost\Sdk\Resource\MediaResource media()
  * @method static \Fopost\Sdk\Resource\ActivityResource activity()
@@ -37,5 +40,11 @@ final class Fopost extends Facade
     protected static function getFacadeAccessor(): string
     {
         return Client::class;
+    }
+
+    /** @param callable(BlogArticleWebhookPayload): (string|null|void) $callback may return the live URL */
+    public static function onArticlePublished(callable $callback): void
+    {
+        static::$app->make(ArticleReceiver::class)->onPublished($callback);
     }
 }
