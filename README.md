@@ -50,6 +50,7 @@ Everything else is optional:
 | `FOPOST_API_URL` | `https://api.fopost.com` | API base URL |
 | `FOPOST_API_TIMEOUT` | `30` | Seconds to wait for one request |
 | `FOPOST_API_MAX_RETRIES` | `3` | Attempts for a rate limited request |
+| `FOPOST_WEBSITE_SECRET` | none | Secret FoPost signs published articles with, see [Receive blog articles](#receive-blog-articles) |
 
 ## Quickstart
 
@@ -122,6 +123,16 @@ Fopost::labels()->update($label->id, name: 'Launch');
 Fopost::labels()->delete($label->id);
 ```
 
+### Activity
+
+```php
+$page = Fopost::activity()->list($workspaceId);
+
+// The audit log: who joined, left, or changed role and access, plus changes to
+// two-step verification, passkeys, single sign-on, and signed-in devices.
+$audit = Fopost::activity()->list($workspaceId, 'security');
+```
+
 ### AI
 
 ```php
@@ -169,6 +180,50 @@ $template = Fopost::whatsapp()->createTemplate(
     'UTILITY',
     [['type' => 'BODY', 'text' => 'Your order is on its way.']],
 );
+### Contacts
+
+The people behind that inbox: one row per human, however many handles they write from. Needs the `inbox` scope, except `conversationAnalytics()`, which answers counts per thread and needs `analytics`.
+
+```php
+$contacts = Fopost::contacts()->list($workspaceId, search: 'ada');
+$threads = Fopost::contacts()->conversations($contacts->items[0]->id);
+Fopost::contacts()->import($workspaceId, file_get_contents('contacts.csv'));
+```
+
+### Broadcasts and sequences
+
+A broadcast is one message into every conversation you already have with a segment of your contacts; a sequence is a series of them on a delay. Neither opens a cold DM.
+
+Nothing is sent into a closed messaging window: Messenger and Instagram take a business-initiated message only within 24 hours of the contact's last one, so recipients outside it come back skipped with `window_closed` rather than attempted. The number sent is therefore often lower than the audience, and that is correct rather than a failure.
+
+Reading needs the `inbox` scope; `send()`, `cancel()`, `enroll()` and `unenroll()` also need `publish`.
+
+```php
+use Fopost\Sdk\Model\SequenceStep;
+
+$broadcast = Fopost::broadcasts()->create(
+    $workspaceId,
+    $accountId,
+    'September check-in',
+    'New colours just landed. Want a look?',
+    audience: ['platforms' => ['instagram']],
+);
+
+// The recipients count is how many contacts matched, not how many will be messaged.
+Fopost::broadcasts()->send($broadcast->id);
+
+// Who was skipped, and why.
+foreach (Fopost::broadcasts()->recipients($broadcast->id, status: 'skipped') as $recipient) {
+    echo $recipient->displayName, ': ', $recipient->skipReason, PHP_EOL;
+}
+
+$sequence = Fopost::sequences()->create($workspaceId, $accountId, 'Welcome', [
+    SequenceStep::make(0, 'Thanks for the follow'),
+    SequenceStep::make(48, 'Here is what people usually ask us first.'),
+]);
+
+Fopost::sequences()->enroll($sequence->id, [$contactId]);
+Fopost::sequences()->unenroll($sequence->id, [$contactId]);
 ```
 
 ### Ads
@@ -184,6 +239,20 @@ $report = Fopost::ads()->insights($connectionId, $tree->campaigns[0]->id, '2026-
 $leads = Fopost::ads()->leadsFeed($workspaceId, cursor: $cursor);
 ```
 
+### Blog
+
+An article goes to a website; a post goes to a social network. Reads and keyword edits need the `posts` scope, `requestArticle()`, `planKeywords()` and `regenerateArticle()` need `ai`, `publishArticle()` needs `publish`.
+
+```php
+$article = Fopost::blog()->requestArticle($workspaceId, keyword: 'scheduling posts from laravel');
+
+foreach (Fopost::blog()->listArticles($workspaceId, status: 'draft') as $draft) {
+    echo $draft->title, PHP_EOL;
+}
+
+Fopost::blog()->publishArticle($workspaceId, $article->id);
+```
+
 ### Media
 
 ```php
@@ -194,6 +263,37 @@ $asset = Fopost::media()->uploadDirect(
     bytes: file_get_contents('launch.png'),
 );
 ```
+
+## Receive blog articles
+
+Point the blog at your site with `Fopost::blog()->updateSettings($workspaceId, ['targetKind' => 'website', 'websiteUrl' => 'https://yourbrand.com/fopost/articles'])`. The result carries `websiteSecret` once; put it in `.env` as `FOPOST_WEBSITE_SECRET`. Every published article is then delivered to that URL as a signed `article.published` webhook.
+
+Mount the receiver in `routes/web.php` or `routes/api.php`:
+
+```php
+Route::fopostArticles('/fopost/articles');
+```
+
+It reads the raw body, verifies the signature through `fopost/sdk`, answers `401` when it does not match, `{ "ok": true }` for the `article.test` ping, and hands a published article to your callback. Register it in a service provider's `boot()`; return the live URL and the receiver echoes it back as `{ "url": "..." }`:
+
+```php
+use Fopost\Laravel\Facades\Fopost;
+use Fopost\Sdk\Model\BlogArticleWebhookPayload;
+
+Fopost::onArticlePublished(function (BlogArticleWebhookPayload $article): string {
+    $post = Article::updateOrCreate(['fopost_id' => $article->id], [
+        'title' => $article->title,
+        'slug' => $article->slug,
+        'body' => $article->bodyHtml,
+        'excerpt' => $article->excerpt,
+        'tags' => $article->tags,
+    ]);
+
+    return route('articles.show', $post);
+});
+```
+
+Prefer events? Every verified delivery also dispatches `Fopost\Laravel\Events\ArticlePublished` with the same `$article`; a listener that returns a string is echoed as the URL when no callback is registered. Image URLs on the payload are fetchable for six hours, so download and store your own copy.
 
 ## Errors
 
