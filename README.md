@@ -161,6 +161,25 @@ Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
 Fopost::inbox()->update($unread[0]->id, 'resolved');
 ```
 
+### WhatsApp Business
+
+Needs the `accounts` scope. Available once the parent SDK release carrying
+`WhatsappResource` is installed; the platform owns the templates, flows, profile
+and commerce settings, so every call is live and all of it answers 503 until
+WhatsApp is set up.
+
+```php
+$profile = Fopost::whatsapp()->getProfile($accountId);
+
+// Filing a template returns the review status the platform gave it, not an
+// assumed one: it is PENDING until the platform approves it.
+$template = Fopost::whatsapp()->createTemplate(
+    $accountId,
+    'order_shipped',
+    'en_US',
+    'UTILITY',
+    [['type' => 'BODY', 'text' => 'Your order is on its way.']],
+);
 ### Contacts
 
 The people behind that inbox: one row per human, however many handles they write from. Needs the `inbox` scope, except `conversationAnalytics()`, which answers counts per thread and needs `analytics`.

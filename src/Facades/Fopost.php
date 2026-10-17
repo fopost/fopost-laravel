@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\MediaResource media()
  * @method static \Fopost\Sdk\Resource\ActivityResource activity()
  * @method static \Fopost\Sdk\Resource\GoogleBusinessResource googleBusiness()
+ * @method static \Fopost\Sdk\Resource\WhatsappResource whatsapp()
  * @method static string baseUrl()
  * @method static mixed request(string $method, string $path, mixed $json = null, ?array $params = null)
  *
