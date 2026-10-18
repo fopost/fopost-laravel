@@ -5,6 +5,10 @@ All notable changes to `fopost/laravel` are listed here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- `fopost/sdk` is now required at `^0.3` from Packagist; the development branch pin and its VCS repository entry are gone.
+
 ### Added
 
 - `Fopost::blog()` surfaces the parent SDK's blog resource.
