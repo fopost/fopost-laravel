@@ -9,10 +9,15 @@ use Fopost\Sdk\Client;
 use Fopost\Sdk\Resource\AccountsResource;
 use Fopost\Sdk\Resource\AdsResource;
 use Fopost\Sdk\Resource\AiResource;
+use Fopost\Sdk\Resource\AutomationsResource;
 use Fopost\Sdk\Resource\BlogResource;
+use Fopost\Sdk\Resource\ConnectSessionsResource;
 use Fopost\Sdk\Resource\InboxResource;
 use Fopost\Sdk\Resource\LabelsResource;
+use Fopost\Sdk\Resource\LogsResource;
 use Fopost\Sdk\Resource\PostsResource;
+use Fopost\Sdk\Resource\QueueResource;
+use Fopost\Sdk\Resource\WebhooksResource;
 use Fopost\Sdk\Resource\WorkspacesResource;
 
 final class FacadeTest extends TestCase
@@ -32,6 +37,11 @@ final class FacadeTest extends TestCase
         $this->assertInstanceOf(InboxResource::class, Fopost::inbox());
         $this->assertInstanceOf(AdsResource::class, Fopost::ads());
         $this->assertInstanceOf(BlogResource::class, Fopost::blog());
+        $this->assertInstanceOf(QueueResource::class, Fopost::queue());
+        $this->assertInstanceOf(ConnectSessionsResource::class, Fopost::connectSessions());
+        $this->assertInstanceOf(WebhooksResource::class, Fopost::webhooks());
+        $this->assertInstanceOf(AutomationsResource::class, Fopost::automations());
+        $this->assertInstanceOf(LogsResource::class, Fopost::logs());
     }
 
     public function test_it_proxies_a_call_through_to_the_client(): void

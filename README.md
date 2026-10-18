@@ -100,12 +100,33 @@ foreach (Fopost::posts()->iterate(workspaceId: $workspaceId) as $everyPost) {
 }
 ```
 
+### Queue
+
+```php
+$slot = Fopost::queue()->createSlot($workspaceId, weekday: 1, time: '09:00', timezone: 'Europe/Zagreb');
+$next = Fopost::queue()->next($workspaceId);
+$upcoming = Fopost::queue()->preview($workspaceId, count: 5);
+Fopost::queue()->deleteSlot($slot->id);
+```
+
 ### Accounts
 
 ```php
 $accounts = Fopost::accounts()->list($workspaceId);
 $account = Fopost::accounts()->get($accountId);
 Fopost::accounts()->disconnect($accountId);
+```
+
+### Connect sessions
+
+```php
+$session = Fopost::connectSessions()->create(
+    externalUserId: 'user_42',
+    platforms: ['instagram', 'linkedin'],
+    redirectUrl: 'https://yourbrand.com/connected',
+);
+// send the customer to $session->url, then poll
+$session = Fopost::connectSessions()->get($session->id);
 ```
 
 ### Workspaces
@@ -133,6 +154,23 @@ $page = Fopost::activity()->list($workspaceId);
 $audit = Fopost::activity()->list($workspaceId, 'security');
 ```
 
+### Logs
+
+```php
+$page = Fopost::logs()->list($workspaceId, days: 7, status: 'error');
+$more = Fopost::logs()->list($workspaceId, before: $page->nextCursor);
+```
+
+### Webhooks
+
+```php
+$webhook = Fopost::webhooks()->create($workspaceId, 'https://yourbrand.com/hooks/fopost', ['post.published']);
+Fopost::webhooks()->test($webhook->id);
+
+$deliveries = Fopost::webhooks()->listDeliveries($webhook->id, status: 'failed');
+Fopost::webhooks()->redeliver($webhook->id, $deliveries[0]->id);
+```
+
 ### AI
 
 ```php
@@ -149,6 +187,17 @@ $rewritten = Fopost::ai()->rewrite(
     platforms: ['x', 'threads'],
     workspaceId: $workspaceId,
 );
+```
+
+### Automations
+
+```php
+$automations = Fopost::automations()->list();
+$automation = Fopost::automations()->get($automationId);
+Fopost::automations()->toggle($automationId);
+
+$versions = Fopost::automations()->listVersions($automationId);
+Fopost::automations()->restoreVersion($automationId, 3);
 ```
 
 ### Inbox
