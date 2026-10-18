@@ -3,6 +3,16 @@
 All notable changes to `fopost/laravel` are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- `fopost/sdk` is now required at `^0.4`.
+
+### Added
+
+- `Fopost::queue()`, `Fopost::connectSessions()`, `Fopost::webhooks()`, `Fopost::automations()` and `Fopost::logs()` surface the parent SDK's posting queue, hosted connect links, webhooks, automations and request log resources.
+
 ## [0.2.0] - 2026-10-18
 
 ### Changed
