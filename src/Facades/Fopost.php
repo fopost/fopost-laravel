@@ -17,10 +17,13 @@ use Illuminate\Support\Facades\Facade;
  *     $accounts = Fopost::accounts()->list($workspaceId);
  *
  * @method static \Fopost\Sdk\Resource\PostsResource posts()
+ * @method static \Fopost\Sdk\Resource\QueueResource queue()
  * @method static \Fopost\Sdk\Resource\AccountsResource accounts()
+ * @method static \Fopost\Sdk\Resource\ConnectSessionsResource connectSessions()
  * @method static \Fopost\Sdk\Resource\WorkspacesResource workspaces()
  * @method static \Fopost\Sdk\Resource\LabelsResource labels()
  * @method static \Fopost\Sdk\Resource\AiResource ai()
+ * @method static \Fopost\Sdk\Resource\AutomationsResource automations()
  * @method static \Fopost\Sdk\Resource\InboxResource inbox()
  * @method static \Fopost\Sdk\Resource\ContactsResource contacts()
  * @method static \Fopost\Sdk\Resource\BroadcastsResource broadcasts()
@@ -29,6 +32,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Fopost\Sdk\Resource\AdsResource ads()
  * @method static \Fopost\Sdk\Resource\MediaResource media()
  * @method static \Fopost\Sdk\Resource\ActivityResource activity()
+ * @method static \Fopost\Sdk\Resource\LogsResource logs()
+ * @method static \Fopost\Sdk\Resource\WebhooksResource webhooks()
  * @method static \Fopost\Sdk\Resource\GoogleBusinessResource googleBusiness()
  * @method static \Fopost\Sdk\Resource\WhatsappResource whatsapp()
  * @method static string baseUrl()
