@@ -27,11 +27,6 @@ jobs:
           extensions: curl, json, mbstring
           coverage: none
 
-      # fopost/sdk is not on Packagist yet, so resolve it straight from its GitHub
-      # repository. Delete this step once the package is published.
-      - name: Point Composer at the parent SDK repository
-        run: composer config repositories.parent vcs https://github.com/fopost/fopost-php
-
       - name: Require the Laravel version under test
         run: composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
 
