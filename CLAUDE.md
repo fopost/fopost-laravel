@@ -27,7 +27,7 @@ When the parent's public surface changes, this repo needs a matching PR.
 
 ### Parent dependency (registry status)
 
-`fopost/sdk` is on Packagist, newest release 0.3.0. `composer.json` requires `"fopost/sdk": "^0.3"`
+`fopost/sdk` is on Packagist, newest release 0.3.0; 0.4.0 is on its way. `composer.json` requires `"fopost/sdk": "^0.4"`
 and declares no extra repositories; Composer resolves it from Packagist, and CI does the same.
 
 ## Brand Rules
