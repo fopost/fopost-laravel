@@ -30,6 +30,12 @@ jobs:
       - name: Require the Laravel version under test
         run: composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
 
+      # Until the matching fopost/sdk release is on Packagist, resolve it from its repository.
+      - name: Resolve fopost/sdk from its repository
+        run: |
+          composer config repositories.fopost-sdk vcs https://github.com/fopost/fopost-php
+          composer require "fopost/sdk:^0.4 || dev-main" --no-interaction --no-update
+
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
 
