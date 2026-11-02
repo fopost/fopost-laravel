@@ -5,6 +5,10 @@ All notable changes to `fopost/laravel` are listed here. The format follows
 
 ## [Unreleased]
 
+### Removed
+
+- `Fopost::blog()`, `Route::fopostArticles()`, `Fopost::onArticlePublished()`, the `ArticlePublished` event and the `fopost.website_secret` config key (`FOPOST_WEBSITE_SECRET`), for the retired `/v1/blog` API and its website deliveries. Articles are published as ordinary posts.
+
 ### Changed
 
 - `fopost/sdk` is now required at `^0.4`.
