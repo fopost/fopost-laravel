@@ -204,9 +204,9 @@ Fopost::automations()->restoreVersion($automationId, 3);
 Needs the `inbox` scope.
 
 ```php
-$unread = Fopost::inbox()->list(workspaceId: $workspaceId, state: 'unread');
-Fopost::inbox()->reply($unread[0]->id, 'Thanks for the kind words');
-Fopost::inbox()->update($unread[0]->id, 'resolved');
+$unanswered = Fopost::inbox()->list(workspaceId: $workspaceId, status: 'unanswered');
+Fopost::inbox()->reply($unanswered[0]->id, 'Thanks for the kind words');
+Fopost::inbox()->update($unanswered[0]->id, 'resolved');
 ```
 
 ### WhatsApp Business
